@@ -1,0 +1,83 @@
+<!-- <!doctype html>
+<html>
+    <head>
+        //If-Jinja2, jeśli brak wartośći wykona else
+        {% if title %}
+        //Wartości zmienne, znane dopiero podczas wykonania kodu
+        <title>{{ title }} - Microblog</title> 
+        {% else %}
+        <title>Welcome to Microblog!</title>
+        {% endif %}
+    </head>
+    <body>
+        <h1>Hi, {{ current_user.username }}!</h1>
+        //Elementy posts jako post, powtórzone tyle ile postów razy
+        {% for post in posts %}
+        //Wywołuje nazwę użytkownika, autora z postu, oraz jego treść
+        <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+        {% endfor %}
+    </body>
+</html>-->
+
+
+
+<!-- Dziedziczenie templates, rozszerza base.html o block oznaczony w base.html -->
+{% extends "base.html" %}
+
+{% block app_content %}
+    
+    <!-- Przywitanie użytkownika -->
+    <h1>Hi, {{ current_user.username }}!</h1>
+    
+    <!-- Dodawanie postów -->
+    {% if form %}
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+
+            <p>
+                {{ form.post.label }}<br>
+                {{ form.post(cols=32, rows=4) }}<br>
+
+                {% for error in form.post.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+
+            <p>{{ form.submit() }}</p>
+        </form>
+    {% endif %}
+    
+    <!-- Wyświetlanie postów -->
+    {% for post in posts %}
+        {% include '_post.html' %}
+    {% endfor %}
+    
+
+    <!-- Post Bootstrap -->
+    <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> Newer posts
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    Older posts <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+
+    <!-- Pre-Bootstrap -->
+
+    <!-- Next/Previous Page -->
+    <!-- {% if prev_url %}
+    <a href="{{ prev_url }}">Newer posts</a>
+    {% endif %}
+    {% if next_url %}
+    <a href="{{ next_url }}">Older posts</a>
+    {% endif %} -->
+
+{% endblock %}

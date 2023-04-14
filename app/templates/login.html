@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+<!-- Rozszerze template base.html o zawartość tego w bloku oznaczonym poniżej -->
+
+{% block app_content %}
+    <h1 id="signin">Sign In</h1>
+    <!-- URL do którego wysłane zostaną dane, metoda wysłania, bez walidacji, walidacje wykona Python -->
+    <form action="" method="post" novalidate>
+        <!-- Tworzy hidden field, za pomocą tokena SECRET_KEY, w celu ochrony przed Seasurf -->
+        {{ form.hidden_tag() }}
+        <p>
+            <!-- Etykieta Formularza -->
+            {{ form.username.label }}<br>
+            <!-- Input Formularza i atrybut size -->
+            {{ form.username(size=32) }}
+
+            <!-- Jeśli error lub więcej w nazwie użytkownika to je wypisze -->
+            {% for error in form.username.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+
+        </p>
+        <p>
+            {{ form.password.label }}<br>
+            {{ form.password(size=32) }}
+
+            <!-- Jeśli błąd w haśle to je wyświetli -->
+            {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    <!-- Zmiana hasła -->
+    <p>
+        Forgot Your Password?
+        <a href="{{ url_for('reset_password_request') }}">Click to Reset It</a>
+    </p>
+
+    <br>
+
+    <!-- Nowy użytkownik -->
+    <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
+{% endblock %}   
